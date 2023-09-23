@@ -11,25 +11,34 @@ export type AppState = typeof initialState;
 export const appSlice = createSlice<
   AppState,
   {
-    setLoading: CaseReducer<AppState, PayloadAction<Boolean>>;
-    setUsers: CaseReducer<AppState, PayloadAction<any[]>>;
+    getUserAction: CaseReducer<AppState, PayloadAction>;
+    getUserSuccessAction: CaseReducer<AppState, PayloadAction<any[]>>;
+    // getUserErrorAction: CaseReducer<AppState, PayloadAction<any[]>>;
   }
 >({
   name: "app",
   initialState,
   reducers: {
-    setLoading: (state, { payload }) => {
-      return {
-        ...state,
-        loading: payload,
-      };
-    },
+    // setLoading: (state, { payload }) => {
+    //   return {
+    //     ...state,
+    //     loading: payload,
+    //   };
+    // },
 
-    setUsers: (state, { payload }) => {
-      return {
-        ...state,
-        users: payload,
-      };
+    // setUsers: (state, { payload }) => {
+    //   return {
+    //     ...state,
+    //     users: payload,
+    //   };
+    // },
+    getUserAction: (state) => {
+      state.loading = true;
+      state.users = [];
+    },
+    getUserSuccessAction: (state, { payload }) => {
+      state.loading = false;
+      state.users = payload;
     },
   },
 });
@@ -38,5 +47,5 @@ export const useAppSelector = buildSubStateSelector<AppState>(
   (state) => state.app
 );
 
-export const appActions = appSlice.actions;
+export const { getUserAction, getUserSuccessAction } = appSlice.actions;
 export const appReducer = appSlice.reducer;
